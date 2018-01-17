@@ -4,6 +4,7 @@ from time import time
 import random
 from pygame.locals import *
 from pygame.compat import unichr_, unicode_
+import image
 
 
 ##Variables##
@@ -35,8 +36,6 @@ font_small = pygame.font.Font(None, 40)
 
 image = pygame.image.load ('cat.png')
 
-
-
 ##METHOD##
 
 def main ():
@@ -47,6 +46,7 @@ def main ():
     
     while True:
         pygame.display.get_surface().fill(BACKGR_COL)
+        
         
    #Transitions#
     for event in pygame.event.get():                        
@@ -63,13 +63,21 @@ def main ():
             if STATE == "Fixation":
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     degrees_to_rotate = random.randint (0,360) 
+                    flip_image = random.randint (0,1)
+                    stim1 = image
+                    stim2 = image
                     STATE = "Pair of objects"
                     print(STATE)
                     
             elif STATE == "Pair of objects":
                 if event.type == KEYDOWN and event.key in KEYS.values():
                     #rotation and mirroring images
-                    
+                    if stim1 == 'cat.png':
+                        rotate(image, degrees_to_rotate, 'cat.png')
+                    if stim2 == 'cat.png':
+                        rotate(image, degrees_to_rotate, 'cat.png')
+                    elif flip_image == 1:
+                        flip(image, 'cat.png')
                     time_when_reacted = time()
                     this_reaction_time = time_when_reacted - time_when_presented
                     this_correctness = (event.key == KEYS[image]) #YES/NO
@@ -120,10 +128,10 @@ def main ():
             draw_fixation()
         
     if STATE == "Pair of objects":
-            draw_image1 ()
-            draw_image2 ()
-            draw_button(SCREEN_SIZE[0]*1/5, 450, "Yes", col_green)
-            draw_button(SCREEN_SIZE[0]*4/5, 450, "No", col_red)
+            draw_stimulus (SCREEN_SIZE[0]/2, 0,200) #def_draw image!!
+            #draw_stimulus2 (SCREEN_SIZE[0]*3/5, 200,250)
+            draw_button (SCREEN_SIZE[0]*1/5, 450, "Yes", col_green)
+            draw_button (SCREEN_SIZE[0]*4/5, 450, "No", col_red)
         
     if STATE == "Feedback":
             draw_feedback(this_correctness, this_reaction_time)
@@ -150,7 +158,7 @@ def draw_welcome ():
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
     screen.blit(text_surface, text_rectangle)
     
-def draw_instrcution (): #instructional text#
+def draw_instruction (): #instructional text#
     text_surface = font.render("Instruction", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
@@ -174,26 +182,31 @@ def draw_button(xpos, ypos, label, color):
     text = font_small.render(label, True, color, BACKGR_COL)
     text_rectangle = text.get_rect()
     text_rectangle.center = (xpos, ypos)
-    screen.blit(text, text_rectangle
-    
-def flip_image(image_path, saved_location):
-    image_obj = Image.open(image_path)
-    rotated_image = image_obj.transpose(Image.FLIP_LEFT_RIGHT)
+    screen.blit(text, text_rectangle)
+            
+def flip(image_path, saved_location):
+    image = Image.open(image_path)
+    rotated_image = image.transpose(Image.FLIP_LEFT_RIGHT)
     rotated_image.save(saved_location)
     rotated_image.show()
+    return rotated_image
     
 def rotate(image_path, degrees_to_rotate, saved_location):
-    image_obj = Image.open(image_path)
-    rotated_image = image_obj.rotate(degrees_to_rotate)
+    image = Image.open(image_path)
+    rotated_image = image.rotate(degrees_to_rotate)
     rotated_image.save(saved_location)
     rotated_image.show()
+    return rotated_image
 
-def draw_image1(): #2 pictures being rotated#
-    
+def draw_stimulus():
+    image = pygame.image.load ('cat.png')
+    text_rectangle = text_surface.get_rect()
+    text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
+    screen.blit(text_surface, text_rectangle)
         
     
-def draw_image2():
-    
+#def draw_image2(w, h, degrees_to_rotate):
+    #image.show()
        
 def draw_feedback (this_correctness, this_reaction_time):
      if correct:
@@ -205,15 +218,15 @@ def draw_feedback (this_correctness, this_reaction_time):
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
         screen.blit(text_surface, text_rectangle)
-    else:
+     else:
         text_surface = font_small.render("Wrong key!", True, col_red, BACKGR_COL)
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
         screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
-    text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
-    screen.blit(text_surface, text_rectangle)
+        text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
+        text_rectangle = text_surface.get_rect()
+        text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
+        screen.blit(text_surface, text_rectangle)
     
     
 def draw_goodbye():
