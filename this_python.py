@@ -54,12 +54,12 @@ def main ():
    #Transitions#
     for event in pygame.event.get():                        
             if STATE == "Welcome":
-                if event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed():
                     STATE = "Instruction"
                     print(STATE)
                     
             if STATE == "Instruction":
-                if event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed():
                     STATE = "Fixation"
                     print(STATE)
                     
@@ -125,7 +125,7 @@ def main ():
      # Drawing to the screen#
     if STATE == "Welcome":
             draw_welcome()
-            draw_button(SCREEN_SIZE[0]*3/5, 450, "Press Space to continue", col_black)
+            draw_button(SCREEN_SIZE[0]*3/5, 450, "Press Space or click in Window to continue", col_black)
             
             
     if STATE == "Instruction":
@@ -160,7 +160,7 @@ def draw_welcome ():
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
+    text_surface = font_small.render("Press Spacebar or click in Window to continue", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
     screen.blit(text_surface, text_rectangle)
@@ -170,13 +170,21 @@ def draw_instruction (): #instructional text#
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Two objects will be presented on the screen. They can be rotated or mirrored. Please choose if these objects are the same by pressing Y for yes or N for no.", True, col_black, BACKGR_COL)
+    text_surface = font_small.render("Two objects will be presented on the screen.", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar to start experiment", True, col_black, BACKGR_COL)
+    text_surface = font_small.render(" They can be rotated or mirrored.", True, col_black, BACKGR_COL)
+    text_rectangle = text_surface.get_rect()
+    text_rectangle.center = (SCREEN_SIZE[0]/2.0,250)
+    screen.blit(text_surface, text_rectangle)
+    text_surface = font_small.render("Please choose if these objects are the same by pressing Y for yes or N for no.", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
+    screen.blit(text_surface, text_rectangle)
+    text_surface = font_small.render("Press Spacebar or click in Window to start experiment", True, col_black, BACKGR_COL)
+    text_rectangle = text_surface.get_rect()
+    text_rectangle.center = (SCREEN_SIZE[0]/2.0,400)
     screen.blit(text_surface, text_rectangle)
     
 def draw_fixation():
@@ -235,7 +243,7 @@ def draw_feedback (this_correctness, this_reaction_time):
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
         screen.blit(text_surface, text_rectangle)
-        text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
+        text_surface = font_small.render("Press Spacebar or click in Window to continue", True, col_black, BACKGR_COL)
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
         screen.blit(text_surface, text_rectangle)
