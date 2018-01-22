@@ -4,7 +4,10 @@ from time import time
 import random
 from pygame.locals import *
 from pygame.compat import unichr_, unicode_
-import image
+from PIL import image
+import numpy as np
+
+
 
 
 ##Variables##
@@ -22,7 +25,7 @@ KEYS = {"Yes": K_y,
         "No": K_n}
 
 BACKGR_COL = col_grey
-SCREEN_SIZE = (700, 500)
+SCREEN_SIZE = (1000, 800)
 
 pygame.init()
 pygame.display.set_mode(SCREEN_SIZE) 
@@ -64,29 +67,33 @@ def main ():
                 if event.type == KEYDOWN and event.key == K_SPACE:
                     degrees_to_rotate = random.randint (0,360) 
                     flip_image = random.randint (0,1)
-                    stim1 = image
-                    stim2 = image
+                    stimulus1 = image
+                    stimulus2 = image
                     STATE = "Pair of objects"
                     print(STATE)
                     
             elif STATE == "Pair of objects":
                 if event.type == KEYDOWN and event.key in KEYS.values():
                     #rotation and mirroring images
-                    if stim1 == 'cat.png':
+                    if stimulus1 == 'cat.png':
                         rotate(image, degrees_to_rotate, 'cat.png')
-                    if stim2 == 'cat.png':
+                    if stimulus2 == 'cat.png':
                         rotate(image, degrees_to_rotate, 'cat.png')
                     elif flip_image == 1:
                         flip(image, 'cat.png')
+                    if flip_image == 1:
+                        this_answer = "No"
+                    else:
+                        this_answer = "Yes"
                     time_when_reacted = time()
                     this_reaction_time = time_when_reacted - time_when_presented
-                    this_correctness = (event.key == KEYS[image]) #YES/NO
+                    this_correctness = (event.key == KEYS [this_answer])
                     STATE = "Feedback"
                     time_when_presented = time()
                     print(STATE)
 
             elif STATE == "Feedback":
-                if event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event
                     if trial_number < 20:
                         STATE = "Fixation"
                     else:
@@ -128,8 +135,8 @@ def main ():
             draw_fixation()
         
     if STATE == "Pair of objects":
-            draw_stimulus (SCREEN_SIZE[0]/2, 0,200) #def_draw image!!
-            #draw_stimulus2 (SCREEN_SIZE[0]*3/5, 200,250)
+            draw_stimulus1 ()
+            draw_stimulus2 ()
             draw_button (SCREEN_SIZE[0]*1/5, 450, "Yes", col_green)
             draw_button (SCREEN_SIZE[0]*4/5, 450, "No", col_red)
         
@@ -172,7 +179,7 @@ def draw_instruction (): #instructional text#
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
     screen.blit(text_surface, text_rectangle)
     
-def draw_fixation(): #big cross in middle#
+def draw_fixation():
     text_surface = font_small.render("X", True, col_red, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,250)
@@ -198,15 +205,20 @@ def rotate(image_path, degrees_to_rotate, saved_location):
     rotated_image.show()
     return rotated_image
 
-def draw_stimulus():
-    image = pygame.image.load ('cat.png')
+def draw_stimulus1():
+    image = 
+    text_surface = font_small.render("cat.png", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
+    text_rectangle.center = (SCREEN_SIZE[0]/1.0,250)
     screen.blit(text_surface, text_rectangle)
-        
     
-#def draw_image2(w, h, degrees_to_rotate):
-    #image.show()
+    
+def draw_stimulus2():
+     image = 
+     text_surface = font_small.render("cat.png", True, col_black, BACKGR_COL)
+     text_rectangle = text_surface.get_rect()
+     text_rectangle.center = (SCREEN_SIZE[0]/3.0,250)
+     screen.blit(text_surface, text_rectangle)
        
 def draw_feedback (this_correctness, this_reaction_time):
      if correct:
@@ -244,7 +256,9 @@ def draw_goodbye():
     screen.blit(text_surface, text_rectangle)
     
 
-        
+#Data analysis
+
+       
         
         
 main()
