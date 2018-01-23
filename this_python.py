@@ -4,7 +4,6 @@ from time import time
 import random
 from pygame.locals import *
 from pygame.compat import unichr_, unicode_
-from PIL import image
 import numpy as np
 
 
@@ -37,7 +36,8 @@ screen.fill(BACKGR_COL)
 font = pygame.font.Font(None, 80)
 font_small = pygame.font.Font(None, 40) 
 
-image = pygame.image.load ('cat.png')
+image = pygame.image.load ('correct6.png')
+
 
 ##METHOD##
 
@@ -54,12 +54,12 @@ def main ():
    #Transitions#
     for event in pygame.event.get():                        
             if STATE == "Welcome":
-                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed():
+                if event.type == KEYDOWN and event.key == K_SPACE:
                     STATE = "Instruction"
                     print(STATE)
                     
             if STATE == "Instruction":
-                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed():
+                if event.type == KEYDOWN and event.key == K_SPACE:
                     STATE = "Fixation"
                     print(STATE)
                     
@@ -68,19 +68,21 @@ def main ():
                     degrees_to_rotate = random.randint (0,360) 
                     flip_image = random.randint (0,1)
                     stimulus1 = image
+                    screen.blit(image,(100,300))
                     stimulus2 = image
+                    screen.blit(image,(400,300))
                     STATE = "Pair of objects"
                     print(STATE)
                     
             elif STATE == "Pair of objects":
                 if event.type == KEYDOWN and event.key in KEYS.values():
                     #rotation and mirroring images
-                    if stimulus1 == 'cat.png':
-                        rotate(image, degrees_to_rotate, 'cat.png')
-                    if stimulus2 == 'cat.png':
-                        rotate(image, degrees_to_rotate, 'cat.png')
+                    if stimulus1 == image:
+                        rotate(image, degrees_to_rotate)
+                    if stimulus2 == image:
+                        rotate(image, degrees_to_rotate)
                     elif flip_image == 1:
-                        flip(image, 'cat.png')
+                        flip(image)
                     if flip_image == 1:
                         this_answer = "No"
                     else:
@@ -125,7 +127,7 @@ def main ():
      # Drawing to the screen#
     if STATE == "Welcome":
             draw_welcome()
-            draw_button(SCREEN_SIZE[0]*3/5, 450, "Press Space or click in Window to continue", col_black)
+            draw_button(SCREEN_SIZE[0]*3/5, 450, "Press Space to continue", col_black)
             
             
     if STATE == "Instruction":
@@ -160,7 +162,7 @@ def draw_welcome ():
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar or click in Window to continue", True, col_black, BACKGR_COL)
+    text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
     screen.blit(text_surface, text_rectangle)
@@ -170,21 +172,13 @@ def draw_instruction (): #instructional text#
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Two objects will be presented on the screen.", True, col_black, BACKGR_COL)
+    text_surface = font_small.render("Two objects will be presented on the screen. They can be rotated or mirrored. Please choose if these objects are the same by pressing Y for yes or N for no.", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render(" They can be rotated or mirrored.", True, col_black, BACKGR_COL)
-    text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/2.0,250)
-    screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Please choose if these objects are the same by pressing Y for yes or N for no.", True, col_black, BACKGR_COL)
+    text_surface = font_small.render("Press Spacebar to start experiment", True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
-    screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar or click in Window to start experiment", True, col_black, BACKGR_COL)
-    text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/2.0,400)
     screen.blit(text_surface, text_rectangle)
     
 def draw_fixation():
@@ -200,30 +194,28 @@ def draw_button(xpos, ypos, label, color):
     screen.blit(text, text_rectangle)
             
 def flip(image_path, saved_location):
-    image = Image.open(image_path)
-    rotated_image = image.transpose(Image.FLIP_LEFT_RIGHT)
+    image
+    rotated_image = image.transpose(image.FLIP_LEFT_RIGHT)
     rotated_image.save(saved_location)
     rotated_image.show()
     return rotated_image
     
 def rotate(image_path, degrees_to_rotate, saved_location):
-    image = Image.open(image_path)
+    image
     rotated_image = image.rotate(degrees_to_rotate)
     rotated_image.save(saved_location)
     rotated_image.show()
     return rotated_image
 
 def draw_stimulus1():
-    image = 
-    text_surface = font_small.render("cat.png", True, col_black, BACKGR_COL)
+    text_surface = font_small.render(image, True, col_black, BACKGR_COL)
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/1.0,250)
     screen.blit(text_surface, text_rectangle)
     
     
 def draw_stimulus2():
-     image = 
-     text_surface = font_small.render("cat.png", True, col_black, BACKGR_COL)
+     text_surface = font_small.render(image, True, col_black, BACKGR_COL)
      text_rectangle = text_surface.get_rect()
      text_rectangle.center = (SCREEN_SIZE[0]/3.0,250)
      screen.blit(text_surface, text_rectangle)
@@ -243,7 +235,7 @@ def draw_feedback (this_correctness, this_reaction_time):
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
         screen.blit(text_surface, text_rectangle)
-        text_surface = font_small.render("Press Spacebar or click in Window to continue", True, col_black, BACKGR_COL)
+        text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
         screen.blit(text_surface, text_rectangle)
