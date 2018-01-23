@@ -268,7 +268,7 @@ def draw_goodbye():
 #Data analysis
 def saveResults(trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness):
     filename = "mrt results.csv"
-    results = numpy.array([trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness])
+    results = np.array([trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness])
     np.savetxt(filename, results, delimiter=",")
        
         
