@@ -39,7 +39,7 @@ font_small = pygame.font.Font(None, 40)
 image = pygame.image.load ('correct6.png')
 
 #data storage
-trialnumber = []
+trial_number = []
 this_reaction_time = []
 degrees_to_rotate = []
 flip_image = []
@@ -61,12 +61,12 @@ def main ():
    #Transitions#
     for event in pygame.event.get():                        
             if STATE == "Welcome":
-                if event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event:
                     STATE = "Instruction"
                     print(STATE)
                     
             if STATE == "Instruction":
-                if event.type == KEYDOWN and event.key == K_SPACE:
+                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event:
                     STATE = "Fixation"
                     print(STATE)
                     
@@ -105,7 +105,7 @@ def main ():
             elif STATE == "Feedback":
                 if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event
                     if trial_number < 20:
-                        saveResults(trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness)
+                        saveResults(trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness)
                         STATE = "Fixation"
                     else:
                         STATE = "Goodbye"
@@ -266,9 +266,9 @@ def draw_goodbye():
     
 
 #Data analysis
-def saveResults(trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness):
+def saveResults(trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness):
     filename = "mrt results.csv"
-    results = np.array([trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness])
+    results = numpy.array([trial_number, this_reaction_time, degrees_to_rotate, flip_image, this_correctness])
     np.savetxt(filename, results, delimiter=",")
        
         
