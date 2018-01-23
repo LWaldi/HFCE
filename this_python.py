@@ -38,13 +38,6 @@ font_small = pygame.font.Font(None, 40)
 
 image = pygame.image.load ('correct6.png')
 
-#data storage
-trialnumber = []
-this_reaction_time = []
-degrees_to_rotate = []
-flip_image = []
-this_correctness = []
-
 
 ##METHOD##
 
@@ -105,7 +98,6 @@ def main ():
             elif STATE == "Feedback":
                 if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event
                     if trial_number < 20:
-                        saveResults(trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness)
                         STATE = "Fixation"
                     else:
                         STATE = "Goodbye"
@@ -266,11 +258,9 @@ def draw_goodbye():
     
 
 #Data analysis
-def saveResults(trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness):
-    filename = "mrt results.csv"
-    results = numpy.array([trialnumber, this_reaction_time, degrees_to_rotate, flip_image, this_correctness])
-    numpy.savetxt(filename, results, delimiter=",")
+
        
         
         
 main()
+        
