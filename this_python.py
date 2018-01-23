@@ -88,10 +88,11 @@ def main ():
                     else:
                         this_answer = "Yes"
                     time_when_reacted = time()
+                    time_when_presented = time()
                     this_reaction_time = time_when_reacted - time_when_presented
                     this_correctness = (event.key == KEYS [this_answer])
                     STATE = "Feedback"
-                    time_when_presented = time()
+                    
                     print(STATE)
 
             elif STATE == "Feedback":
@@ -221,12 +222,12 @@ def draw_stimulus2():
      screen.blit(text_surface, text_rectangle)
        
 def draw_feedback (this_correctness, this_reaction_time):
-     if correct:
+     if this_correctness:
         text_surface = font_small.render("correct", True, col_black, BACKGR_COL)
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
         screen.blit(text_surface, text_rectangle)
-        text_surface = font_small.render(str(int(reaction_time * 1000)) + "ms", True, col_black, BACKGR_COL)
+        text_surface = font_small.render(str(int(this_reaction_time * 1000)) + "ms", True, col_black, BACKGR_COL)
         text_rectangle = text_surface.get_rect()
         text_rectangle.center = (SCREEN_SIZE[0]/2.0,200)
         screen.blit(text_surface, text_rectangle)
