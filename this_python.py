@@ -56,17 +56,17 @@ def main ():
     
     while True:
         pygame.display.get_surface().fill(BACKGR_COL)
-        
+    
         
    #Transitions#
-    for event in pygame.event.get():                        
+        for event in pygame.event.get():                        
             if STATE == "Welcome":
-                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event:
+                if event.type == KEYDOWN and event.key == K_SPACE: #mouse event: # or event.type == pygame.mouse.get_pressed()
                     STATE = "Instruction"
                     print(STATE)
                     
             if STATE == "Instruction":
-                if event.type == KEYDOWN and event.key == K_SPACE or event.type == pygame.mouse.get_pressed(): #mouse event:
+                if event.type == KEYDOWN and event.key == K_SPACE: #mouse event:
                     STATE = "Fixation"
                     print(STATE)
                     
@@ -116,53 +116,53 @@ def main ():
         
    #Automatic Transitions#
         
-    if STATE == "Fixation": 
-            if trial_number < 20:
-                if (time() - time_when_presented) > 1:
-                    STATE = "Pair of objects"
+        if STATE == "Fixation": 
+                if trial_number < 20:
+                    if (time() - time_when_presented) > 1:
+                        STATE = "Pair of objects"
+                        print (STATE)
+                else: 
+                    STATE = "Goodbye"
                     print (STATE)
-            else: 
-                STATE = "Goodbye"
-                print (STATE)
-        
-        
-    elif STATE == "Fixation":
-            trial_number = trial_number + 1
-            time_when_presented = time()
-            STATE = "Pair of objects"
-            print(STATE)
-        
-        
-     # Drawing to the screen#
-    if STATE == "Welcome":
-            draw_welcome()
-            draw_button(SCREEN_SIZE[0]*3/5, 450, "Press Space to continue", col_black)
             
             
-    if STATE == "Instruction":
-            draw_instruction()
+        elif STATE == "Fixation":
+                trial_number = trial_number + 1
+                time_when_presented = time()
+                STATE = "Pair of objects"
+                print(STATE)
             
-    if STATE == "Fixation":
-            draw_fixation()
-        
-    if STATE == "Pair of objects":
-            draw_stimulus1 ()
-            draw_stimulus2 ()
-            draw_button (SCREEN_SIZE[0]*1/5, 450, "Yes", col_green)
-            draw_button (SCREEN_SIZE[0]*4/5, 450, "No", col_red)
-        
-    if STATE == "Feedback":
-            draw_feedback(this_correctness, this_reaction_time)
-        
-    if STATE == "Goodbye":
-            draw_goodbye()
-        
-    if STATE == "Quit":
-            pygame.quit()
-            sys.exit()
-
-    pygame.display.update()  
-        
+            
+         # Drawing to the screen#
+        if STATE == "Welcome":
+                draw_welcome()
+                draw_button(SCREEN_SIZE[0]/2.0, 450, "Press Space to continue", col_black)
+                
+                
+        if STATE == "Instruction":
+                draw_instruction()
+                
+        if STATE == "Fixation":
+                draw_fixation()
+            
+        if STATE == "Pair of objects":
+                draw_stimulus1 ()
+                draw_stimulus2 ()
+                draw_button (SCREEN_SIZE[0]*1/5, 450, "Yes", col_green)
+                draw_button (SCREEN_SIZE[0]*4/5, 450, "No", col_red)
+            
+        if STATE == "Feedback":
+                draw_feedback(this_correctness, this_reaction_time)
+            
+        if STATE == "Goodbye":
+                draw_goodbye()
+            
+        if STATE == "Quit":
+                pygame.quit()
+                sys.exit()
+    
+        pygame.display.update()  
+            
         
 #Defining methods#
         
@@ -171,10 +171,10 @@ def draw_welcome ():
     text_rectangle = text_surface.get_rect()
     text_rectangle.center = (SCREEN_SIZE[0]/2.0,150)
     screen.blit(text_surface, text_rectangle)
-    text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
-    text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
-    screen.blit(text_surface, text_rectangle)
+   # text_surface = font_small.render("Press Spacebar to continue", True, col_black, BACKGR_COL)
+    #text_rectangle = text_surface.get_rect()
+    #text_rectangle.center = (SCREEN_SIZE[0]/2.0,300)
+    #screen.blit(text_surface, text_rectangle)
     
 def draw_instruction (): #instructional text#
     text_surface = font.render("Instruction", True, col_black, BACKGR_COL)
@@ -217,17 +217,19 @@ def rotate(image_path, degrees_to_rotate, saved_location):
     return rotated_image
 
 def draw_stimulus1():
-    text_surface = font_small.render(image, True, col_black, BACKGR_COL)
-    text_rectangle = text_surface.get_rect()
-    text_rectangle.center = (SCREEN_SIZE[0]/1.0,250)
-    screen.blit(text_surface, text_rectangle)
+   # text_surface = font_small.render(image, True, col_black, BACKGR_COL)
+    screen.blit(image, (SCREEN_SIZE[0]/1.0, 250))
+    #text_rectangle = text_surface.get_rect()
+    #text_rectangle.center = (SCREEN_SIZE[0]/1.0,250)
+    #screen.blit(text_surface, text_rectangle)
     
     
 def draw_stimulus2():
-     text_surface = font_small.render(image, True, col_black, BACKGR_COL)
-     text_rectangle = text_surface.get_rect()
-     text_rectangle.center = (SCREEN_SIZE[0]/3.0,250)
-     screen.blit(text_surface, text_rectangle)
+     #text_surface = font_small.render(image, True, col_black, BACKGR_COL)
+     #text_rectangle = text_surface.get_rect()
+     #text_rectangle.center = (SCREEN_SIZE[0]/3.0,250)
+     #screen.blit(text_surface, text_rectangle)
+     screen.blit(image, (SCREEN_SIZE[0]/1.0, 250))
        
 def draw_feedback (this_correctness, this_reaction_time):
      if this_correctness:
